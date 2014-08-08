@@ -1,7 +1,8 @@
 {
   "name": "loading-wave",
   "version": "0.0.0",
-  "description": "",
+  "description": "A simple wave pendulum-like loading animation for the browser",
+  "keywords": ["loading", "animation", "browser"],
   "main": "index.coffee",
   "scripts": {
     "dev": "beefy example/index.js --live"
