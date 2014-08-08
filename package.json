@@ -1,0 +1,23 @@
+{
+  "name": "loading-animation",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.coffee",
+  "scripts": {
+    "dev": "beefy example/index.coffee --live"
+  },
+  "author": "David Guttman <david@guttman.io> (http://davidguttman.com/)",
+  "license": "MIT",
+  "dependencies": {
+    "coffeeify": "^0.7.0",
+    "raf": "^2.0.2"
+  },
+  "browserify": {
+    "transform": [
+      "coffeeify"
+    ]
+  },
+  "devDependencies": {
+    "beefy": "^2.1.0"
+  }
+}
