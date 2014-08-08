@@ -1,6 +1,8 @@
 # Loading Wave
 
-A simple [wave pendulum](https://www.youtube.com/watch?v=yVkdfJ9PkRQ)-like loading animation.
+A simple [wave pendulum](https://www.youtube.com/watch?v=yVkdfJ9PkRQ)-like loading animation. [Demo](http://requirebin.com/?gist=f042def21b552c1a9b8d)
+
+![gif](http://i.imgur.com/CSaRd2I.gif)
 
 ```js
 var Wave = require('loading-wave')
