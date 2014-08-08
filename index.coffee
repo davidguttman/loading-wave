@@ -1,17 +1,17 @@
 raf = require 'raf'
 TWOPI = Math.PI * 2
 
-module.exports = -> new Loading arguments...
+module.exports = -> new Wave arguments...
 
-Loading = (@opts={}) ->
+Wave = (@opts={}) ->
   @el = document.createElement 'div'
-  @el.style.border = '1px solid blue'
 
-  {@height, @width} = @opts
+  {@height, @width, @color, @n} = @opts
 
   @height ?= 100
   @width ?= 100
-  @nBalls ?= 10
+  @n ?= 10
+  @color ?= 'steelblue'
 
   @el.style[k] = v for k, v of {
     position: 'relative'
@@ -19,31 +19,42 @@ Loading = (@opts={}) ->
     height: @height + 'px'
   }
 
-  @balls = [1..@nBalls].map (n) =>
-    period = 1000/(n+10/2)
-    ball = new Ball
-      x: n * @width/@nBalls
+  @bars = [1..@n].map (n) =>
+    period = 750/(n+10/2)
+    bar = new Bar
+      x: n * @width/@n
       y: @height/2
+      w: @width/@n - 2
+      boxHeight: @height
+      color: @color
       period: period
 
-  @el.appendChild ball.el for ball in @balls
+  @el.appendChild bar.el for bar in @bars
 
   @timeStart = Date.now()
   @loop()
   return this
 
-Loading::loop = (a) ->
+Wave::loop = ->
+  return if @stopped
   elapsed = Date.now() - @timeStart
-  # @el.innerHTML = elapsed
 
-  for ball in @balls
-    ball.update elapsed
+  for bar in @bars
+    bar.update elapsed
 
   raf => @loop()
 
-Ball = (@opts={}) ->
+Wave::start = ->
+  if @stopped
+    @stopped = false
+    @loop()
+
+Wave::stop = ->
+  @stopped = true
+
+Bar = (@opts={}) ->
   @el = document.createElement 'div'
-  {@period, @x, @y, @w, @h} = @opts
+  {@period, @x, @y, @w, @h, @color, @boxHeight} = @opts
 
   @period ?= 1
   @x ?= 0
@@ -56,23 +67,31 @@ Ball = (@opts={}) ->
   @el.style[k] = v for k, v of {
     position: 'absolute'
     width: @w + 'px'
-    height: @h + 'px'
+    left: (@x - @w) + 'px'
+    top: @boxHeight/2 + 'px'
+    height: (@y - @boxHeight) + 'px'
+
     background: @color
-    'border-radius': @w/2 + 'px'
+    # 'border-radius': @w/2 + 'px'
   }
   @setPos @x, @y
 
   return this
 
-Ball::update = (time) ->
-  t = (time/(@period)) / TWOPI
+Bar::update = (time) ->
+  t = (time/@period) / TWOPI
 
-  # console.log period if Math.random() < 0.05
-  @y = @boxHeight/2 * Math.sin(t) + @boxHeight/2
-  @setPos @x, @y
+  @y = Math.sin(-t)/2 * @boxHeight
+  @setPos()
 
-Ball::setPos = (x, y) ->
-  @el.style[k] = v for k, v of {
-    left: (@x - @w) + 'px'
-    top: (@y - @h/2) + 'px'
-  }
+Bar::setPos = ->
+  if @y > 0
+    @el.style[k] = v for k, v of {
+      top: @boxHeight/2 + 'px'
+      height: @y + 'px'
+    }
+  else
+    @el.style[k] = v for k, v of {
+      top: @boxHeight/2 + @y + 'px'
+      height: -@y + 'px'
+    }
