@@ -1,6 +1,6 @@
 {
   "name": "loading-wave",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple wave pendulum-like loading animation for the browser",
   "keywords": [
     "loading",
