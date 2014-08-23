@@ -68,11 +68,11 @@ Bar = (@opts={}) ->
     position: 'absolute'
     width: @w + 'px'
     left: (@x - @w) + 'px'
-    top: @boxHeight/2 + 'px'
-    height: (@y - @boxHeight) + 'px'
+    top: @boxHeight
+    height: @w + 'px'
 
     background: @color
-    # 'border-radius': @w/2 + 'px'
+    'border-radius': @w/2 + 'px'
   }
   @setPos @x, @y
 
@@ -85,13 +85,6 @@ Bar::update = (time) ->
   @setPos()
 
 Bar::setPos = ->
-  if @y > 0
-    @el.style[k] = v for k, v of {
-      top: @boxHeight/2 + 'px'
-      height: @y + 'px'
-    }
-  else
-    @el.style[k] = v for k, v of {
-      top: @boxHeight/2 + @y + 'px'
-      height: -@y + 'px'
-    }
+  @el.style[k] = v for k, v of {
+    top: @boxHeight/2 + @y + 'px'
+  }
